@@ -1,11 +1,7 @@
 #ifndef FC_HARDWARE
 #define FC_HARDWARE
 
-#ifdef ON_FC
-    #include "pico/stdlib.h"
-    #include "hardware/uart.h"
-    #include "hardware/irq.h"
-#else
+#ifndef ON_FC
     #include <stdint.h>
 #endif
 
