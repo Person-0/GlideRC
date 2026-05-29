@@ -4,7 +4,7 @@
     #include "hardware/uart.h"
     #include "hardware/irq.h"
 #else
-    #include "stdint.h"
+    #include <stdint.h>
 #endif
 
 #include "hardware.h"
