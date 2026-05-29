@@ -1,6 +1,25 @@
 #include <stdio.h>
+#include <stdint.h>
+
 #include "../src/hardware.h"
 
 int main() {
-    printf("hello world");
+    printf("hello world\n");
+
+    inject_sbus_byte(0x0F); // start byte
+
+    // 22 data bytes
+    for (int i = 0; i < 22; i++) {
+        // 0xff is 11111111 (8bits, every bit is 1)
+        // so it means all channels will be 11111111111 (11 bits, every bit is 1)
+        // which in decimal is 2047
+        inject_sbus_byte(0xFF);
+    }
+
+    inject_sbus_byte(0x00); // flags
+    inject_sbus_byte(0x00); // end byte
+
+    printf("DONE\n");
+
+    return 0;
 }
