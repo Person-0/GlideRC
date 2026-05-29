@@ -1,0 +1,2 @@
+default: echo specify a test to run it!
+sbus: gcc sbus.c ../src/hardware.c -o build/build.exe && "build/build.exe"
