@@ -33,13 +33,21 @@ volatile uint8_t sbus_workingBit;
 volatile uint8_t sbus_channelIndex = 0;
 
 static void parse_channel(uint8_t channel_data[11]) {
-    printf("CHANNEL %d DATA\n", sbus_channelIndex);
+
+    uint16_t value = 0;
+
     for (int i = 0; i < 11; i++) {
-        printf("%d", channel_data[i]);
+        value |= (channel_data[i] << i);
     }
-    printf("\n");
-    printf("===========\n");
+
     sbus_channelIndex += 1;
+
+    #ifndef ON_FC
+        printf("===========\n");
+        printf("CHANNEL %d DATA\n", sbus_channelIndex-1);
+        printf("VALUE = %u\n",value);
+        printf("===========\n");
+    #endif
 }
 
 static void _parse_sbus_byte(uint8_t sbus_byte) {
