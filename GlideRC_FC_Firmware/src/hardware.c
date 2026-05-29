@@ -52,6 +52,10 @@ static void parse_channel(uint8_t channel_data[11]) {
 
 static void _parse_sbus_byte(uint8_t sbus_byte) {
 
+    #ifndef ON_FC
+        printf("sbus byte recieved: %u\n", sbus_byte);
+    #endif
+
     if (sbus_index > 0) {
 
         if (sbus_index > 22) {
@@ -81,12 +85,20 @@ static void _parse_sbus_byte(uint8_t sbus_byte) {
             sbus_index = 0;
             sbus_channelIndex = 0;
             sbus_bitsStored = 0;
+
+            #ifndef ON_FC
+                printf("finished 25 bytes for an sbus packet\n");
+            #endif
         }
 
     } else if (sbus_byte == 0x0F) {
         sbus_index = 1;
         sbus_channelIndex = 0;
         sbus_bitsStored = 0;
+
+        #ifndef ON_FC
+            printf("starting sbus packet parsing (received start byte)\n");
+        #endif
     }
 
 }
