@@ -1,0 +1,120 @@
+#include <stdio.h>
+#ifdef ON_FC
+    #include "pico/stdlib.h"
+    #include "hardware/uart.h"
+    #include "hardware/irq.h"
+#else
+    #include "stdint.h"
+#endif
+
+#include "hardware.h"
+
+/*  
+=============
+ RECEIVER
+ SBUS (already externally inverted)
+=============
+*/
+
+// SBUS settings
+#define SBUS_GPIO_PIN 1
+#define SBUS_UART_ID uart0
+#define SBUS_UART_IRQ UART0_IRQ
+#define SBUS_BAUD_RATE 100000
+#define SBUS_DATA_BITS 8
+#define SBUS_STOP_BITS 2
+#define SBUS_PARITY UART_PARITY_EVEN
+
+// SBUS parsing
+volatile uint8_t sbus_index = 0;
+volatile uint8_t sbus_bitStore[11];
+volatile uint8_t sbus_bitsStored = 0;
+volatile uint8_t sbus_workingBit;
+volatile uint8_t sbus_channelIndex = 0;
+
+static void parse_channel(uint8_t channel_data[11]) {
+    printf("CHANNEL %d DATA\n", sbus_channelIndex);
+    for (int i = 0; i < 11; i++) {
+        printf("%d", channel_data[i]);
+    }
+    printf("\n");
+    printf("===========\n");
+    sbus_channelIndex += 1;
+}
+
+static void _parse_sbus_byte(uint8_t sbus_byte) {
+
+    if (sbus_index > 0) {
+
+        if (sbus_index > 22) {
+
+            // 23 = flag
+            // 24 = end  0x00
+
+        } else {
+
+            // 16 rc channels on 22 bytes 
+            // each channel made of  11 bits
+            
+            for (int i = 7; i >= 0; i -= 1) {
+                sbus_workingBit = (sbus_byte >> i) & 1;
+                sbus_bitStore[10 - sbus_bitsStored] = sbus_workingBit;
+                sbus_bitsStored += 1;
+                if (sbus_bitsStored >= 11) {
+                    parse_channel(sbus_bitStore);
+                    sbus_bitsStored = 0;
+                }
+            }
+
+        }
+
+        sbus_index += 1;
+        if (sbus_index >= 25) {
+            sbus_index = 0;
+            sbus_channelIndex = 0;
+            sbus_bitsStored = 0;
+        }
+
+    } else if (sbus_byte == 0x0F) {
+        sbus_index = 1;
+        sbus_channelIndex = 0;
+        sbus_bitsStored = 0;
+    }
+
+}
+
+static void on_uart_rx() {
+    #ifdef ON_FC
+        while (uart_is_readable(SBUS_UART_ID)) {
+            _parse_sbus_byte(uart_getc(SBUS_UART_ID));
+        }
+    #endif
+}
+
+void setup_sbus_uart() {
+    #ifdef ON_FC
+        uart_init(SBUS_UART_ID, SBUS_BAUD_RATE);
+        gpio_set_function(SBUS_GPIO_PIN, GPIO_FUNC_UART);
+        uart_set_hw_flow(SBUS_UART_ID, false, false);
+        uart_set_format(
+            SBUS_UART_ID,
+            SBUS_DATA_BITS,
+            SBUS_STOP_BITS,
+            SBUS_PARITY
+        );
+        uart_set_fifo_enabled(SBUS_UART_ID, true);
+        irq_set_exclusive_handler(SBUS_UART_IRQ, on_uart_rx);
+        irq_set_enabled(SBUS_UART_IRQ, true);
+        uart_set_irq_enables(SBUS_UART_ID,true,false); // RX only
+        printf("SBUS UART port setup correctly\n");
+    #endif
+}
+
+void inject_sbus_byte(uint8_t data) {
+    _parse_sbus_byte(data);
+}
+
+/*  
+=============
+=============
+*/

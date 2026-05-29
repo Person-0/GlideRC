@@ -2,3 +2,5 @@ sketch.paint
 bom.xlsx
 desktop.ini
 schematics/test-backups
+*/.vscode
+.vscode

@@ -12,7 +12,7 @@ Done in KiCAD: [Project folder](./schematics/)
 ![schematics](./assets/schematics.png)
 
 ## Firmware
-In progress: [Firmware folder](./firmware/)
+In progress: [Firmware folder](./GlideRC_FC_Firmware/)
 
 ## Airframe
 [Sample Foam Glider](https://www.walmart.com/ip/2-Pack-Glider-Plane-Toys-17-5-Large-Throwing-Foam-Airplane-Dual-Flight-Mode-Flying-Toy-The-Best-Outdoor-Sport-Toy-Gifts-for-Kids/469352630)
@@ -31,3 +31,10 @@ In progress: [Firmware folder](./firmware/)
 - https://docs.micropython.org/en/latest/rp2/quickref.html#quick-reference-for-the-rp2
 - https://forums.raspberrypi.com/viewtopic.php?t=88572
 - https://forum.arduino.cc/t/mpu6500-6dof-spi-not-working/552645/6
+- https://www.raspberrypi.com/documentation/microcontrollers/c_sdk.html
+- https://pip-assets.raspberrypi.com/categories/610-raspberry-pi-pico/documents/RP-008276-DS-1-getting-started-with-pico.pdf
+- https://pip-assets.raspberrypi.com/categories/609-microcontroller-boards/documents/RP-009085-KB-1-raspberry-pi-pico-c-sdk.pdf
+- https://uwarg-docs.atlassian.net/wiki/spaces/efs/pages/2238283817/SBUS+Protocol
+- https://www.youtube.com/watch?v=IqLUHj7nJhI
+- https://www.w3schools.com/c/index.php
+- https://forums.raspberrypi.com/viewtopic.php?t=306053
