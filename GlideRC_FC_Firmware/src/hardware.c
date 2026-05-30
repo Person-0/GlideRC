@@ -9,7 +9,29 @@
 
 #include "hardware.h"
 
+/*
+ PIN DEFINITIONS
+*/
+
+// Receiver (SBUS protocol)
+#define SBUS_PIN 1 // uart rx
+#define SBUS_UART_ID uart0
+
+// IMU
+#define IMU_SDO 4
+#define IMU_NCS 5
+#define IMU_SCL 6
+#define IMU_SDA 7
+
+// Motor
+#define ESC_SIGNAL_PIN 8
+
+// Control surfaces
+#define AILERON_SERVO_PIN 9
+#define ELEVATOR_SERVO_PIN 10
+
 /*  
+=============  
 =============
  RECEIVER
  SBUS (already externally inverted)
@@ -17,9 +39,7 @@
 */
 
 // SBUS settings
-#define SBUS_GPIO_PIN 1
-#define SBUS_UART_ID uart0
-#define SBUS_UART_IRQ UART0_IRQ
+#define SBUS_UART_IRQ SBUS_UART_ID == uart0 ? UART0_IRQ : UART1_IRQ
 #define SBUS_BAUD_RATE 100000
 #define SBUS_DATA_BITS 8
 #define SBUS_STOP_BITS 2
@@ -111,7 +131,7 @@ static void on_uart_rx() {
 void setup_sbus_uart() {
     #ifdef ON_FC
         uart_init(SBUS_UART_ID, SBUS_BAUD_RATE);
-        gpio_set_function(SBUS_GPIO_PIN, GPIO_FUNC_UART);
+        gpio_set_function(SBUS_PIN, GPIO_FUNC_UART);
         uart_set_hw_flow(SBUS_UART_ID, false, false);
         uart_set_format(
             SBUS_UART_ID,
