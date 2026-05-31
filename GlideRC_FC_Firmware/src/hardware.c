@@ -3,6 +3,8 @@
     #include "pico/stdlib.h"
     #include "hardware/uart.h"
     #include "hardware/irq.h"
+    #include "hardware/pwm.h"
+    #include "hardware/clocks.h"
 #else
     #include <stdint.h>
 #endif
@@ -134,4 +136,64 @@ void inject_sbus_byte(uint8_t data) {
 /*  
 =============
 =============
+ Control Surfaces
+ Servos
+=============
 */
+
+static void setup_servo(uint8_t pin) {
+    #ifdef ON_FC
+        printf("setting up servo on pin %d\n", pin);
+        gpio_set_function(pin, GPIO_FUNC_PWM);
+        uint slice_num = pwm_gpio_to_slice_num(pin);
+        uint32_t clock_speed =  clock_get_hz(clk_sys);
+        float div = clock_speed / 1000000.0f;
+        pwm_set_clkdiv(slice_num, div);
+        uint16_t wrap = (1000000.0f / SERVO_FREQ) - 1;
+        pwm_set_wrap(slice_num, wrap);
+        pwm_set_gpio_level(pin, SERVO_MID);
+        pwm_set_enabled(slice_num, true);
+        printf("servo setup on pin %d complete\n", pin);
+    #endif
+}
+
+/*
+ @param angle -> [0, 180]
+*/
+static void servo_move(uint8_t pin, int angle) {
+    if (angle < 0 || angle > 180) {
+        printf(
+            "servo_move: angle out of bounds. pin: %d, angle: %d\n",
+            pin,
+            angle
+        );
+        return;
+    }
+    #ifdef ON_FC
+        pwm_set_gpio_level(pin, SERVO_MIN + (angle * (SERVO_MAX - SERVO_MIN)) / 180);
+    #endif
+}
+
+static void disable_servo(uint8_t pin) {
+    #ifdef ON_FC
+        pwm_set_enabled(pwm_gpio_to_slice_num(pin), false);
+    #endif
+}
+
+void setup_control_servos() {
+    setup_servo(AILERON_SERVO_PIN);
+    setup_servo(ELEVATOR_SERVO_PIN);
+}
+
+void disable_control_servos() {
+    disable_servo(AILERON_SERVO_PIN);
+    disable_servo(ELEVATOR_SERVO_PIN);
+}
+
+void set_aileron_angle(int angle) {
+    servo_move(AILERON_SERVO_PIN, angle);
+}
+
+void set_elevator_angle(int angle) {
+    servo_move(ELEVATOR_SERVO_PIN, angle);
+}

@@ -38,3 +38,8 @@ In progress: [Firmware folder](./GlideRC_FC_Firmware/)
 - https://www.youtube.com/watch?v=IqLUHj7nJhI
 - https://www.w3schools.com/c/index.php
 - https://forums.raspberrypi.com/viewtopic.php?t=306053
+- https://forums.raspberrypi.com/viewtopic.php?t=339740
+- https://www.circuitden.com/blog/16
+- https://forums.raspberrypi.com/viewtopic.php?t=370038
+- https://www.raspberrypi.com/documentation/pico-sdk/hardware.html#group_hardware_pwm_1pwm_example
+- https://www.kpower.com/insight_driver/7471.html/
