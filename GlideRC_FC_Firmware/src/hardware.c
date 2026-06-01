@@ -256,7 +256,7 @@ int setup_imu() {
  @param imu_data output array in which the float values are stored:
                  `{accel[0], accel[1], accel[2], gyro[0] gyro[1] gyro[2]}`
 */
-void read_imu(float imu_data[3]) {
+void read_imu(float imu_data[6]) {
 
     float accel[3] = {0.0f, 0.0f, 0.0f};
     float gyro[3] = {0.0f, 0.0f, 0.0f};
