@@ -7,11 +7,11 @@ Transforming a 2$ hand-thrown foam glider into an RC Airplane.
 I recently discovered this foam glider kit on a toy store while I was travelling. As soon as my eyes saw it, I thought "Why not add a motor and make it fly?" and thus, this project was born. Who would've thought it would take this much effort!
 
 ## Parts
-Mentioned in the [BOM](./bom.csv)
+Available as [BOM.csv](./bom.csv)
 > Might change later on, Depending upon prices and availability.
 
 ## Schematics
-Done in KiCAD: [Project folder](./schematics/)
+Done in KiCAD: [Schematics folder](./schematics/)
 
 ![schematics](./assets/schematics.png)
 
@@ -20,7 +20,16 @@ In progress: [Firmware folder](./GlideRC_FC_Firmware/)<br>
 Please see the readme inside the firmware folder for more info on firmware. 
 
 ## Airframe
-[Sample Foam Glider](https://www.walmart.com/ip/2-Pack-Glider-Plane-Toys-17-5-Large-Throwing-Foam-Airplane-Dual-Flight-Mode-Flying-Toy-The-Best-Outdoor-Sport-Toy-Gifts-for-Kids/469352630)
+[Sample Foam Glider link](https://www.walmart.com/ip/2-Pack-Glider-Plane-Toys-17-5-Large-Throwing-Foam-Airplane-Dual-Flight-Mode-Flying-Toy-The-Best-Outdoor-Sport-Toy-Gifts-for-Kids/469352630)
+
+<img src="./assets/glider_img.png" width="512" height="256">
+<img src="./assets/paintSketch.webp" width="512" height="360">
+
+<br>
+
+> "cog" is short for Centre Of Gravity <br>
+> see: https://rcplanes.online/index5.htm
+
 
 ## What currently works?
 - Radio Receiver-to-MCU data transfer
@@ -44,6 +53,8 @@ These goals will not be possible without physical possession of the required com
 
 ## References
 - https://rcplanes.online/design.htm
+- https://rcplanes.online/index2.htm
+- https://rcplanes.online/index5.htm
 - https://learn.sparkfun.com/tutorials/voltage-dividers/all
 - https://forums.raspberrypi.com/viewtopic.php?t=209958
 - https://forums.raspberrypi.com/viewtopic.php?t=285083
