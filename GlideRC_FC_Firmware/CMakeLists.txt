@@ -38,6 +38,7 @@ pico_sdk_init()
 add_executable(GlideRC_FC_Firmware 
     GlideRC_FC_Firmware.c
     src/hardware.c
+    src/servo.c
 )
 
 # Add global macro definition

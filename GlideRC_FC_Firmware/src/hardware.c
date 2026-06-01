@@ -11,6 +11,7 @@
 
 #include "hardware.h"
 #include "config.h"
+#include "servo.h"
 
 /*  
 =============  
@@ -141,48 +142,9 @@ void inject_sbus_byte(uint8_t data) {
 =============
 */
 
-static void setup_servo(uint8_t pin) {
-    #ifdef ON_FC
-        printf("setting up servo on pin %d\n", pin);
-        gpio_set_function(pin, GPIO_FUNC_PWM);
-        uint slice_num = pwm_gpio_to_slice_num(pin);
-        uint32_t clock_speed =  clock_get_hz(clk_sys);
-        float div = clock_speed / 1000000.0f;
-        pwm_set_clkdiv(slice_num, div);
-        uint16_t wrap = (1000000.0f / SERVO_FREQ) - 1;
-        pwm_set_wrap(slice_num, wrap);
-        pwm_set_gpio_level(pin, SERVO_MID);
-        pwm_set_enabled(slice_num, true);
-        printf("servo setup on pin %d complete\n", pin);
-    #endif
-}
-
-/*
- @param angle -> [0, 180]
-*/
-static void servo_move(uint8_t pin, int angle) {
-    if (angle < 0 || angle > 180) {
-        printf(
-            "servo_move: angle out of bounds. pin: %d, angle: %d\n",
-            pin,
-            angle
-        );
-        return;
-    }
-    #ifdef ON_FC
-        pwm_set_gpio_level(pin, SERVO_MIN + (angle * (SERVO_MAX - SERVO_MIN)) / 180);
-    #endif
-}
-
-static void disable_servo(uint8_t pin) {
-    #ifdef ON_FC
-        pwm_set_enabled(pwm_gpio_to_slice_num(pin), false);
-    #endif
-}
-
 void setup_control_servos() {
-    setup_servo(AILERON_SERVO_PIN);
-    setup_servo(ELEVATOR_SERVO_PIN);
+    setup_servo(AILERON_SERVO_PIN, SERVO_FREQ, SERVO_MID);
+    setup_servo(ELEVATOR_SERVO_PIN, SERVO_FREQ, SERVO_MID);
 }
 
 void disable_control_servos() {
@@ -191,9 +153,41 @@ void disable_control_servos() {
 }
 
 void set_aileron_angle(int angle) {
-    servo_move(AILERON_SERVO_PIN, angle);
+    servo_move(AILERON_SERVO_PIN, angle, SERVO_MIN, SERVO_MAX);
 }
 
 void set_elevator_angle(int angle) {
-    servo_move(ELEVATOR_SERVO_PIN, angle);
+    servo_move(ELEVATOR_SERVO_PIN, angle, SERVO_MIN, SERVO_MAX);
 }
+
+/*
+=============
+=============
+ Brushless Motor
+=============
+*/
+
+void setup_motor() {
+    printf("Setting up motor at Pin %d\n", ESC_SIGNAL_PIN);
+    setup_servo(ESC_SIGNAL_PIN, ESC_FREQ, ESC_MIN);
+}
+
+void disable_motor() {
+    printf("Disabling motor at Pin %d\n", ESC_SIGNAL_PIN);
+    disable_servo(ESC_SIGNAL_PIN);
+}
+
+/*
+ @param throttle -> [0, 100]
+*/
+void set_throttle(uint8_t throttle) {
+    throttle = throttle > 100 ? 100 : throttle;
+    servo_move(ESC_SIGNAL_PIN, (throttle * 180) / 100, ESC_MIN, ESC_MAX);
+}
+
+/*
+=============
+=============
+ IMU
+=============
+*/
