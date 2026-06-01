@@ -30,3 +30,8 @@ This *should* be fairly easy using [VS Code](https://code.visualstudio.com/).
 - Use the `Compile` or `Run` button at bottom right to Compile the code or Run it respectively.
 > Make sure that the board selected matches with what you have.<br>
 > Code compiled for Pico (RP2040) will not run on Pico 2 (RP2350) and vice versa.
+
+Also See:
+- [Getting started with C/C++ development with Raspberry Pi Pico-series and other
+Raspberry Pi microcontroller-based boards](https://pip-assets.raspberrypi.com/categories/610-raspberry-pi-pico/documents/RP-008276-DS-1-getting-started-with-pico.pdf)
+- [Raspberry Pi C/C++ SDK](https://www.raspberrypi.com/documentation/microcontrollers/c_sdk.html)
