@@ -1,9 +1,7 @@
 #ifndef FC_HARDWARE
 #define FC_HARDWARE
 
-#ifndef ON_FC
-    #include <stdint.h>
-#endif
+#include <stdint.h>
 
 void setup_sbus_uart();
 void inject_sbus_byte(uint8_t data);
@@ -19,7 +17,7 @@ void disable_motor();
 void set_throttle(uint8_t throttle);
 
 int setup_imu();
-void read_imu(float imu_data[3]);
+void read_imu(float imu_data[6]);
 float read_imu_temp();
 
 #endif

@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "pico/stdlib.h"
-#include "hardware/pwm.h"
-#include "hardware/clocks.h"
-
+#ifdef ON_FC
+    #include "pico/stdlib.h"
+    #include "hardware/pwm.h"
+    #include "hardware/clocks.h"
+#endif
 #include "servo.h"
 
 void setup_servo(uint8_t pin, int freq, int pos) {
