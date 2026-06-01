@@ -27,6 +27,7 @@ Please see the readme inside the firmware folder for more info on firmware.
 
 <br>
 
+> Yes, this was designed in paint. I'm sorry. <br>
 > "cog" is short for Centre Of Gravity <br>
 > see: https://rcplanes.online/index5.htm
 
