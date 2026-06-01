@@ -226,7 +226,7 @@ int setup_imu() {
         uint8_t activate = mpu9250_reset(&IMU, &spi_pindefs, IMU_SPI, 1000 * 1000);
 
         if (activate > 0) {
-            printf("Failed to initialize IMU!\n");
+            printf("Failed to initialize IMU! (mpu9250_reset failed)\n");
             return 2;
         }
 
@@ -241,13 +241,14 @@ int setup_imu() {
         uint8_t settings = mpu9250_setup(&IMU, &set, correct_gyro);
 
         if (settings) {
-            printf("Failed to initialize IMU!\n");
+            printf("Failed to initialize IMU! (mpu9250_setup failed)\n");
             return 3;
         }
 
         return 0;
 
     #endif
+    printf("Failed to initialize IMU! (not ON_FC)\n");
     return 1;
 }
 
