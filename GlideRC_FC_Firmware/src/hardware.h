@@ -13,4 +13,8 @@ void disable_control_servos();
 void set_aileron_angle(int angle);
 void set_elevator_angle(int angle);
 
+void setup_motor();
+void disable_motor();
+void set_throttle(uint8_t throttle);
+
 #endif

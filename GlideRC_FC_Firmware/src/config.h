@@ -14,6 +14,9 @@
 
 // Motor
 #define ESC_SIGNAL_PIN 8
+#define ESC_FREQ 50
+#define ESC_MIN 1000
+#define ESC_MAX 2000
 
 // Control surfaces
 #define AILERON_SERVO_PIN 9
