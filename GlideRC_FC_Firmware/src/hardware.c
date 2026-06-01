@@ -182,6 +182,7 @@ void disable_motor() {
 */
 void set_throttle(uint8_t throttle) {
     throttle = throttle > 100 ? 100 : throttle;
+    throttle = (uint8_t)(throttle * ESC_LIMIT);
     servo_move(ESC_SIGNAL_PIN, (throttle * 180) / 100, ESC_MIN, ESC_MAX);
 }
 

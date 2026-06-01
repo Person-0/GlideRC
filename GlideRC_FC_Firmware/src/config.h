@@ -17,6 +17,7 @@
 #define ESC_FREQ 50
 #define ESC_MIN 1000
 #define ESC_MAX 2000
+#define ESC_LIMIT 0.25f
 
 // Control surfaces
 #define AILERON_SERVO_PIN 9
