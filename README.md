@@ -3,19 +3,35 @@ Transforming a 2$ hand-thrown foam glider into an RC Airplane.
 <br><br>
 <img src="./assets/glider_img.png" width="256" height="144">
 
+## Motivation
+I recently discovered this foam glider kit on a toy store while I was travelling. As soon as my eyes saw it, I thought "Why not add a motor and make it fly?" and thus, this project was born. Who would've thought it would take this much effort!
+
 ## Parts
 Mentioned in the [BOM](./bom.csv)
-> Might change later on depending upon prices and availability
+> Might change later on, Depending upon prices and availability.
 
 ## Schematics
 Done in KiCAD: [Project folder](./schematics/)
+
 ![schematics](./assets/schematics.png)
 
 ## Firmware
-In progress: [Firmware folder](./GlideRC_FC_Firmware/)
+In progress: [Firmware folder](./GlideRC_FC_Firmware/)<br>
+Please see the readme inside the firmware folder for more info on firmware. 
 
 ## Airframe
 [Sample Foam Glider](https://www.walmart.com/ip/2-Pack-Glider-Plane-Toys-17-5-Large-Throwing-Foam-Airplane-Dual-Flight-Mode-Flying-Toy-The-Best-Outdoor-Sport-Toy-Gifts-for-Kids/469352630)
+
+## What currently works?
+- Radio Receiver-to-MCU data transfer
+- MCU can control the servos (responsible for controlling the aileron and elevator), the brushless motor
+- MCU can access IMU data (gyro, accelerometer)
+
+## What is planned?
+- Calibration of values that we actually receive from the components / that actually make the components work
+- Stabilization of the aircraft when no updates are received from the transmitter using IMU data to get smooth and stable flight
+
+These goals will not be possible without physical possession of the required components, hence will be done after I receive the components.
 
 ## Notes for self
 - look into connector types for battery discharge (specs say xt90 but im skeptical of that)
