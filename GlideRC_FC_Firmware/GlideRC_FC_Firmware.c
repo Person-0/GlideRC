@@ -27,7 +27,26 @@ float imu_data[6] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
 // Recieves data from the receiver
 void reciever_channel_callback(uint8_t channel, uint16_t value) {
-    printf("Channel Callback received %d value for channel %d\n", value, channel);
+
+    #ifndef ON_FC
+        printf("Channel Callback received %d value for channel %d\n", value, channel);
+    #endif
+
+    switch(channel) {
+
+        case CHANNEL_MOTOR:
+            set_throttle(value * 100 / 2047);
+            break;
+        
+        case CHANNEL_AILERON:
+            set_aileron_angle(value * 180 / 2047);
+            break;
+
+        case CHANNEL_ELEVATOR:
+            set_elevator_angle(value * 180 / 2047);
+            break;
+    }
+
 }
 
 int main() {
@@ -60,7 +79,20 @@ int main() {
     // main loop
     while (!EXCEPTION_OCCURED) {
         read_imu(imu_data);
-        printf("imu data read\n");
+        #ifdef ON_FC
+            printf("imu data read\n");
+            printf(
+                "Acceleration in G     X = %10.4f,  Y = %10.4f,  Z = %10.4f\n",
+                imu_data[0],
+                imu_data[1],
+                imu_data[2]
+            );
+            printf("Gyroscope in Deg/s    X = %10.4f,  Y = %10.4f,  Z = %10.4f\n",
+                imu_data[3],
+                imu_data[4],
+                imu_data[5]
+            );
+        #endif
         sleep_ms(100);
     }
 

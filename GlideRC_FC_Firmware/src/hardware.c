@@ -46,7 +46,9 @@ static void parse_channel(volatile uint8_t channel_data[11]) {
     if (channel_callback) {
         channel_callback(sbus_channelIndex, value);
     } else {
-        printf("receiver: channel callback not registered!\n");
+        #ifndef ON_FC
+            printf("receiver: channel callback not registered!\n");
+        #endif
     }
 
     sbus_channelIndex += 1;
@@ -163,10 +165,16 @@ void disable_control_servos() {
     disable_servo(ELEVATOR_SERVO_PIN);
 }
 
+/*
+ @param angle -> [0, 180]
+*/
 void set_aileron_angle(int angle) {
     servo_move(AILERON_SERVO_PIN, angle, SERVO_MIN, SERVO_MAX);
 }
 
+/*
+ @param angle -> [0, 180]
+*/
 void set_elevator_angle(int angle) {
     servo_move(ELEVATOR_SERVO_PIN, angle, SERVO_MIN, SERVO_MAX);
 }
@@ -262,21 +270,7 @@ void read_imu(float imu_data[6]) {
     float gyro[3] = {0.0f, 0.0f, 0.0f};
 
     #ifdef ON_FC
-
         mpu9250_read_motion(&IMU, accel, gyro);
-
-        printf(
-            "Acceleration in G     X = %10.4f,  Y = %10.4f,  Z = %10.4f\n",
-            accel[0],
-            accel[1],
-            accel[2]
-        );
-        printf("Gyroscope in Deg/s    X = %10.4f,  Y = %10.4f,  Z = %10.4f\n",
-            gyro[0],
-            gyro[1],
-            gyro[2]
-        );
-
     #else
         printf("read_imu() called but not ON_FC\n");
     #endif
@@ -294,11 +288,8 @@ float read_imu_temp() {
     float temp = 0.0f;
 
     #ifdef ON_FC
-
         mpu9250_read_temperature(&IMU, &temp);
-
-        printf("Temperature in C      %10.4f\n\n", temp);
-
+        //printf("Temperature in C      %10.4f\n\n", temp);
     #else
         printf("read_imu_temp() called but not ON_FC\n");
     #endif

@@ -6,6 +6,14 @@
 #endif
 
 /*
+ Channel
+ Control Numbers
+*/
+#define CHANNEL_MOTOR 0
+#define CHANNEL_AILERON 1
+#define CHANNEL_ELEVATOR 2
+
+/*
  PIN DEFINITIONS
 */
 
