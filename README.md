@@ -21,7 +21,12 @@ In progress: [Firmware folder](./GlideRC_FC_Firmware/)
 - look into connector types for battery discharge (specs say xt90 but im skeptical of that)
 - look into battery charging
 
-## Credits / References
+## Credits
+- [Optimunn/mp92plus](https://github.com/Optimunn/mp92plus/): Really cool MPU9250 (MPU6500) driver for Raspberry pi pico (RP2040) using I2C or SPI.
+    - [MIT License](https://github.com/Optimunn/mp92plus/blob/main/LICENSE.md)
+    - [located here in firmware](./GlideRC_FC_Firmware/libs/mp92plus/).
+
+## References
 - https://rcplanes.online/design.htm
 - https://learn.sparkfun.com/tutorials/voltage-dividers/all
 - https://forums.raspberrypi.com/viewtopic.php?t=209958
@@ -44,3 +49,5 @@ In progress: [Firmware folder](./GlideRC_FC_Firmware/)
 - https://www.raspberrypi.com/documentation/pico-sdk/hardware.html#group_hardware_pwm_1pwm_example
 - https://www.kpower.com/insight_driver/7471.html/
 - https://www.hackster.io/milkgolium/controlling-a-pwm-brushless-esc-with-raspberry-pi-pico-b2d4bb
+- https://forums.raspberrypi.com/viewtopic.php?t=320933
+- https://github.com/micropython/micropython/blob/d42cba0d22cac812cc5a12f4670010b45932eafa/ports/rp2/machine_spi.c#L42-L46

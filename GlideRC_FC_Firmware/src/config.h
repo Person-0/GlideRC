@@ -1,3 +1,10 @@
+#ifndef ON_FC
+    #define uart0 0
+    #define uart1 1
+    #define spi0 0
+    #define spi1 1
+#endif
+
 /*
  PIN DEFINITIONS
 */
@@ -11,6 +18,7 @@
 #define IMU_NCS 5
 #define IMU_SCL 6
 #define IMU_SDA 7
+#define IMU_SPI spi0
 
 // Motor
 #define ESC_SIGNAL_PIN 8

@@ -18,4 +18,8 @@ void setup_motor();
 void disable_motor();
 void set_throttle(uint8_t throttle);
 
+int setup_imu();
+void read_imu(float imu_data[3]);
+float read_imu_temp();
+
 #endif

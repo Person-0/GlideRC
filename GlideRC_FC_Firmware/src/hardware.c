@@ -5,6 +5,7 @@
     #include "hardware/irq.h"
     #include "hardware/pwm.h"
     #include "hardware/clocks.h"
+    #include "../libs/mp92plus/inc/mp92plus.h"
 #else
     #include <stdint.h>
 #endif
@@ -34,6 +35,7 @@ volatile uint8_t sbus_bitStore[11];
 volatile uint8_t sbus_bitsStored = 0;
 volatile uint8_t sbus_workingBit;
 volatile uint8_t sbus_channelIndex = 0;
+static void (*channel_callback)(uint8_t, uint16_t) = NULL;
 
 static void parse_channel(volatile uint8_t channel_data[11]) {
 
@@ -203,3 +205,104 @@ void set_throttle(uint8_t throttle) {
  IMU
 =============
 */
+#ifdef ON_FC
+    mpu9250_t IMU;
+#endif
+
+/*
+ @return 0 -> success,
+         1 -> not on fc,
+         2 -> mpu9250_reset failed,
+         3 -> mpu9250_setup failed.
+*/
+int setup_imu() {
+    #ifdef ON_FC
+
+        spi_pin_t spi_pindefs = {
+            .miso = IMU_SDO,
+            .mosi = IMU_SDA,
+            .sck = IMU_SCL,
+            .cs = IMU_NCS,
+        };
+
+        uint8_t activate = mpu9250_reset(&IMU, &spi_pindefs, IMU_SPI, 1000 * 1000);
+
+        if (activate > 0) {
+            printf("Failed to initialize IMU!\n");
+            return 2;
+        }
+
+        mpu_settings_t set = {
+            .accel_range = ACCEL_RANGE_16G,
+            .gyro_range = GYRO_RANGE_2000DPS,
+            .dlpf_filter = DLPF_41HZ,
+            .sample_rate_divider = 249
+        };
+
+        int16_t correct_gyro[] = {0, 0, 0};
+        uint8_t settings = mpu9250_setup(&IMU, &set, correct_gyro);
+
+        if (settings) {
+            printf("Failed to initialize IMU!\n");
+            return 3;
+        }
+
+        return 0;
+
+    #endif
+    return 1;
+}
+
+/*
+ @param imu_data output array in which the float values are stored:
+                 `{accel[0], accel[1], accel[2], gyro[0] gyro[1] gyro[2]}`
+*/
+void read_imu(float imu_data[3]) {
+
+    float accel[3] = {0.0f, 0.0f, 0.0f};
+    float gyro[3] = {0.0f, 0.0f, 0.0f};
+
+    #ifdef ON_FC
+
+        mpu9250_read_motion(&IMU, accel, gyro);
+
+        printf(
+            "Acceleration in G     X = %10.4f,  Y = %10.4f,  Z = %10.4f\n",
+            accel[0],
+            accel[1],
+            accel[2]
+        );
+        printf("Gyroscope in Deg/s    X = %10.4f,  Y = %10.4f,  Z = %10.4f\n",
+            gyro[0],
+            gyro[1],
+            gyro[2]
+        );
+
+    #else
+        printf("read_imu() called but not ON_FC\n");
+    #endif
+
+    imu_data[0] = accel[0];
+    imu_data[1] = accel[1];
+    imu_data[2] = accel[2];
+    imu_data[3] = gyro[0];
+    imu_data[4] = gyro[1];
+    imu_data[5] = gyro[2];
+}
+
+float read_imu_temp() {
+
+    float temp = 0.0f;
+
+    #ifdef ON_FC
+
+        mpu9250_read_temperature(&IMU, &temp);
+
+        printf("Temperature in C      %10.4f\n\n", temp);
+
+    #else
+        printf("read_imu_temp() called but not ON_FC\n");
+    #endif
+
+    return temp;
+}

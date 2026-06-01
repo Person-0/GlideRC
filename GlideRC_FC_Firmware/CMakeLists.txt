@@ -61,6 +61,7 @@ target_link_libraries(GlideRC_FC_Firmware
     hardware_irq
     hardware_pwm
     hardware_clocks
+    hardware_spi
 )
 
 # Add the standard include files to the build
