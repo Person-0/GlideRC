@@ -43,6 +43,12 @@ static void parse_channel(volatile uint8_t channel_data[11]) {
         value |= (channel_data[i] << i);
     }
 
+    if (channel_callback) {
+        channel_callback(sbus_channelIndex, value);
+    } else {
+        printf("receiver: channel callback not registered!\n");
+    }
+
     sbus_channelIndex += 1;
 
     #ifndef ON_FC
@@ -128,6 +134,11 @@ void setup_sbus_uart() {
         uart_set_irq_enables(SBUS_UART_ID,true,false); // RX only
         printf("SBUS UART port setup correctly\n");
     #endif
+}
+
+void register_channel_callback(void (*callback)(uint8_t, uint16_t)) {
+    channel_callback = callback;
+    printf("receiver: channel callback registered\n");
 }
 
 void inject_sbus_byte(uint8_t data) {

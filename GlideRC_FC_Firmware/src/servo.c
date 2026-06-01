@@ -9,7 +9,7 @@
 
 #include "servo.h"
 
-static void setup_servo(uint8_t pin, int freq, int pos) {
+void setup_servo(uint8_t pin, int freq, int pos) {
     printf("setting up servo on pin %d\n", pin);
     #ifdef ON_FC
         gpio_set_function(pin, GPIO_FUNC_PWM);
@@ -30,7 +30,7 @@ static void setup_servo(uint8_t pin, int freq, int pos) {
 /*
  @param angle -> [0, 180]
 */
-static void servo_move(uint8_t pin, int angle, int min, int max) {
+void servo_move(uint8_t pin, int angle, int min, int max) {
     if (angle < 0 || angle > 180) {
         printf(
             "servo_move: angle out of bounds. pin: %d, angle: %d\n",
@@ -44,7 +44,7 @@ static void servo_move(uint8_t pin, int angle, int min, int max) {
     #endif
 }
 
-static void disable_servo(uint8_t pin) {
+void disable_servo(uint8_t pin) {
     printf("disable_servo: servo at Pin %d has been disabled\n", pin);
     #ifdef ON_FC
         pwm_set_enabled(pwm_gpio_to_slice_num(pin), false);

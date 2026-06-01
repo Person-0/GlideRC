@@ -3,8 +3,13 @@
 
 #include "../src/hardware.h"
 
+void chnl_cb(uint8_t channel, uint16_t value) {
+    printf("Channel Callback received %d value for channel %d\n", value, channel);
+}
+
 int main() {
     printf("hello world\n");
+    register_channel_callback(chnl_cb);
 
     inject_sbus_byte(0x0F); // start byte
 

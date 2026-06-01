@@ -7,6 +7,7 @@
 
 void setup_sbus_uart();
 void inject_sbus_byte(uint8_t data);
+void register_channel_callback(void (*callback)(uint8_t, uint16_t));
 
 void setup_control_servos();
 void disable_control_servos();
