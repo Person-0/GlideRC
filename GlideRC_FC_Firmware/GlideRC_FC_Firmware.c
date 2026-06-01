@@ -18,6 +18,7 @@ void sleep_forever() {
 void disable_components() {
     disable_motor();
     disable_control_servos();
+    disable_imu();
 }
 
 // State variables
