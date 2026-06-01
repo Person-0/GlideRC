@@ -1,14 +1,11 @@
 #include <stdio.h>
-#ifdef ON_FC
-    #include "pico/stdlib.h"
-    #include "hardware/uart.h"
-    #include "hardware/irq.h"
-    #include "hardware/pwm.h"
-    #include "hardware/clocks.h"
-    #include "../libs/mp92plus/inc/mp92plus.h"
-#else
-    #include <stdint.h>
-#endif
+#include <stdint.h>
+#include "pico/stdlib.h"
+#include "hardware/uart.h"
+#include "hardware/irq.h"
+#include "hardware/pwm.h"
+#include "hardware/clocks.h"
+#include "../libs/mp92plus/inc/mp92plus.h"
 
 #include "hardware.h"
 #include "config.h"

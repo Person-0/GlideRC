@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdint.h>
-
 #include "../src/hardware.h"
 
 void chnl_cb(uint8_t channel, uint16_t value) {

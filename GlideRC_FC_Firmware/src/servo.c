@@ -1,11 +1,8 @@
 #include <stdio.h>
-#ifdef ON_FC
-    #include "pico/stdlib.h"
-    #include "hardware/pwm.h"
-    #include "hardware/clocks.h"
-#else
-    #include <stdint.h>
-#endif
+#include <stdint.h>
+#include "pico/stdlib.h"
+#include "hardware/pwm.h"
+#include "hardware/clocks.h"
 
 #include "servo.h"
 
