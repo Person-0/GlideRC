@@ -26,7 +26,7 @@ bool EXCEPTION_OCCURED = false;
 float imu_data[6] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
 // Recieves data from the receiver
-void reciever_channel_callback(uint8_t channel, uint16_t value) {
+void receiver_channel_callback(uint8_t channel, uint16_t value) {
 
     #ifndef ON_FC
         printf("Channel Callback received %d value for channel %d\n", value, channel);
@@ -62,7 +62,7 @@ int main() {
     // Receiver
     printf("Setting up SBUS UART port...\n");
     setup_sbus_uart();
-    register_channel_callback(reciever_channel_callback);
+    register_channel_callback(receiver_channel_callback);
 
     // Control Surfaces
     setup_control_servos();
