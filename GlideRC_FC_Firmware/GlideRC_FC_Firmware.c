@@ -16,7 +16,7 @@ void sleep_forever() {
 
 // State variables
 bool imu_err = false;
-float imu_data[6];
+float imu_data[6] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
 // Recieves data from the receiver
 void reciever_channel_callback(uint8_t channel, uint16_t value) {
