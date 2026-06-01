@@ -80,6 +80,7 @@ int main() {
     while (!EXCEPTION_OCCURED) {
         read_imu(imu_data);
         #ifdef ON_FC
+            // === CURRENTLY ONLY LOGGING (phase 1) ===
             printf("imu data read\n");
             printf(
                 "Acceleration in G     X = %10.4f,  Y = %10.4f,  Z = %10.4f\n",
