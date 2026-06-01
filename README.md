@@ -43,3 +43,4 @@ In progress: [Firmware folder](./GlideRC_FC_Firmware/)
 - https://forums.raspberrypi.com/viewtopic.php?t=370038
 - https://www.raspberrypi.com/documentation/pico-sdk/hardware.html#group_hardware_pwm_1pwm_example
 - https://www.kpower.com/insight_driver/7471.html/
+- https://www.hackster.io/milkgolium/controlling-a-pwm-brushless-esc-with-raspberry-pi-pico-b2d4bb
