@@ -305,3 +305,10 @@ float read_imu_temp() {
 
     return temp;
 }
+
+void disable_imu() {
+    printf("Disabling IMU_SPI\n");
+    #ifdef ON_FC
+        spi_deinit(IMU_SPI);
+    #endif
+}
