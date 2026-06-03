@@ -7,7 +7,7 @@
 #endif
 #include "servo.h"
 
-void setup_servo(uint8_t pin, int freq, int pos) {
+int setup_servo(uint8_t pin, int freq, int pos) {
     printf("setting up servo on pin %d\n", pin);
     #ifdef ON_FC
         gpio_set_function(pin, GPIO_FUNC_PWM);
@@ -20,9 +20,11 @@ void setup_servo(uint8_t pin, int freq, int pos) {
         pwm_set_gpio_level(pin, pos);
         pwm_set_enabled(slice_num, true);
         printf("servo setup on pin %d complete\n", pin);
+        return 0;
     #else
         printf("servo at pin %d was not setup as not ON_FC\n", pin);
     #endif
+    return 1;
 }
 
 /*

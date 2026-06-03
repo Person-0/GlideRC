@@ -119,7 +119,7 @@ static void on_uart_rx() {
     #endif
 }
 
-void setup_sbus_uart() {
+int setup_sbus_uart() {
     #ifdef ON_FC
         uart_init(SBUS_UART_ID, SBUS_BAUD_RATE);
         gpio_set_function(SBUS_PIN, GPIO_FUNC_UART);
@@ -135,7 +135,10 @@ void setup_sbus_uart() {
         irq_set_enabled(SBUS_UART_IRQ, true);
         uart_set_irq_enables(SBUS_UART_ID,true,false); // RX only
         printf("SBUS UART port setup correctly\n");
+        return 0;
     #endif
+    printf("SBUS UART was not setup as not ON_FC\n");
+    return 1;
 }
 
 void register_channel_callback(void (*callback)(uint8_t, uint16_t)) {
@@ -155,9 +158,16 @@ void inject_sbus_byte(uint8_t data) {
 =============
 */
 
-void setup_control_servos() {
-    setup_servo(AILERON_SERVO_PIN, SERVO_FREQ, SERVO_MID);
-    setup_servo(ELEVATOR_SERVO_PIN, SERVO_FREQ, SERVO_MID);
+int setup_control_servos() {
+    if (setup_servo(AILERON_SERVO_PIN, SERVO_FREQ, SERVO_MID) > 0) {
+        printf("Aileron setup failed!\n");
+        return 1;
+    }
+    if (setup_servo(ELEVATOR_SERVO_PIN, SERVO_FREQ, SERVO_MID) > 0) {
+        printf("Elevator setup failed!\n");
+        return 2;
+    }
+    return 0;
 }
 
 void disable_control_servos() {
@@ -188,7 +198,11 @@ void set_elevator_angle(int angle) {
 
 void setup_motor() {
     printf("Setting up motor at Pin %d\n", ESC_SIGNAL_PIN);
-    setup_servo(ESC_SIGNAL_PIN, ESC_FREQ, ESC_MIN);
+    if (setup_servo(ESC_SIGNAL_PIN, ESC_FREQ, ESC_MIN) > 0) {
+        printf("Motor setup failed!\n");
+        return 1;
+    }
+    return 0;
 }
 
 void disable_motor() {

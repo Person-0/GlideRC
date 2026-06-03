@@ -10,6 +10,10 @@
 #include "src/config.h"
 #include "src/hardware.h"
 
+// State variables
+bool EXCEPTION_OCCURED = false;
+float imu_data[6] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+
 void sleep_forever() {
     printf("sleeping forever.\n");
     while (1) sleep_ms(1000);
@@ -21,9 +25,11 @@ void disable_components() {
     disable_imu();
 }
 
-// State variables
-bool EXCEPTION_OCCURED = false;
-float imu_data[6] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+void on_error_cleanup() {
+    EXCEPTION_OCCURED = true;
+    disable_components();
+    sleep_forever();
+}
 
 // Recieves data from the receiver
 void receiver_channel_callback(uint8_t channel, uint16_t value) {
@@ -61,19 +67,28 @@ int main() {
 
     // Receiver
     printf("Setting up SBUS UART port...\n");
-    setup_sbus_uart();
+    if (setup_sbus_uart() > 0) {
+        printf("FATAL Receiver/SBUS error, Exiting.\n");
+        on_error_cleanup();
+    }
     register_channel_callback(receiver_channel_callback);
 
     // Control Surfaces
-    setup_control_servos();
+    if (setup_control_servos() > 0) {
+        printf("FATAL Control Servos error, Exiting.\n");
+        on_error_cleanup();
+    }
 
     // Motor
-    setup_motor();
+    if (setup_motor() > 0) {
+        printf("FATAL Motor error, Exiting.\n");
+        on_error_cleanup();
+    }
 
     // IMU
     if (setup_imu() > 0) {
-        printf("FATAL IMU error, Disabling motor and servos.\n");
-        EXCEPTION_OCCURED = true;
+        printf("FATAL IMU error, Exiting.\n");
+        on_error_cleanup();
     }
 
     // main loop
@@ -98,6 +113,5 @@ int main() {
     }
 
     printf("EXCEPTION_OCCURED, main loop exited\n");
-    disable_components();
-    sleep_forever();
+    on_error_cleanup();
 }
