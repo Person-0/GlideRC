@@ -196,7 +196,7 @@ void set_elevator_angle(int angle) {
 =============
 */
 
-void setup_motor() {
+int setup_motor() {
     printf("Setting up motor at Pin %d\n", ESC_SIGNAL_PIN);
     if (setup_servo(ESC_SIGNAL_PIN, ESC_FREQ, ESC_MIN) > 0) {
         printf("Motor setup failed!\n");
