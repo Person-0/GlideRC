@@ -2,13 +2,14 @@
 #include <stdbool.h>
 #ifdef ON_FC
     #include "pico/stdlib.h"
+    #include "src/hardware.h"
 #else
     #include <unistd.h>
     #define sleep_ms(ms) usleep((ms) * 1000)
+    #include "tests/mocks/hardware.h"
 #endif
 
 #include "src/config.h"
-#include "src/hardware.h"
 
 // State variables
 bool EXCEPTION_OCCURED = false;
@@ -94,7 +95,7 @@ int main() {
     // main loop
     while (!EXCEPTION_OCCURED) {
         read_imu(imu_data);
-        #ifdef ON_FC
+        #ifndef ON_FC
             // === CURRENTLY ONLY LOGGING (phase 1) ===
             printf("imu data read\n");
             printf(

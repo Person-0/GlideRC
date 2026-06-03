@@ -1,3 +1,3 @@
 default: echo specify a test to run it!
 sbus: gcc sbus.c ../src/hardware.c ../src/servo.c -o build/build.exe && "build/build.exe"
-main: gcc ../GlideRC_FC_Firmware.c ../src/hardware.c ../src/servo.c -o build/build.exe && "build/build.exe"
+main: gcc ../GlideRC_FC_Firmware.c ./mocks/hardware.c ../src/servo.c -o build/build.exe && "build/build.exe"
