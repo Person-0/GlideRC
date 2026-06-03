@@ -20,6 +20,14 @@ pray sbus
 
 Instead of typing the full GCC command to build and run the `sbus.c` test.
 
+## Available tests
+
+- `sbus`: Injects custom sbus packets using `inject_sbus_byte` (see [hardware.c](./src/hardware.c)) with proper debug logs.
+- `main`: Tests the main code flow by mocking `hardware.c` (see [mocks/hardware.c](./tests/mocks/hardware.c)).
+
+Please do check the [`.prayer`](./tests/.prayer) file too incase I've forgotten to update them here. <br>
+Run these tests by cd ing into /tests and running `pray test_name`.
+
 ## Compiling / Running the code
 
 This *should* be fairly easy using [VS Code](https://code.visualstudio.com/).
