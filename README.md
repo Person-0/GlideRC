@@ -13,23 +13,45 @@ Available as [BOM.csv](./bom.csv)
 ## Schematics
 Done in KiCAD: [Schematics folder](./schematics/)
 
+Since there is no PCB (these are all components wired/soldered together), there are no PCB files. <br>
+However, you can still open the schematics in KiCAD, by:
+- Opening KiCAD
+- Clicking **File** (top left) >> **Open Project**
+- Navigating to the the repository's saved destination,
+- Opening **/schematics** directory
+- Selecting the file `test.kicad_pro`
+
+This will open the schematics in KiCAD for easier viewing!
+
 ![schematics](./assets/schematics.png)
 
 ## Firmware
 In progress: [Firmware folder](./GlideRC_FC_Firmware/)<br>
 Please see the readme inside the firmware folder for more info on firmware. 
 
-## Airframe
-[Sample Foam Glider link](https://www.walmart.com/ip/2-Pack-Glider-Plane-Toys-17-5-Large-Throwing-Foam-Airplane-Dual-Flight-Mode-Flying-Toy-The-Best-Outdoor-Sport-Toy-Gifts-for-Kids/469352630)
+## Design
 
-<img src="./assets/glider_img.png" width="512" height="256">
+Design files (**.step, .dxf** are available in the [`/design` directory](./design/))
+
+> [Sample Foam Glider link](https://www.walmart.com/ip/2-Pack-Glider-Plane-Toys-17-5-Large-Throwing-Foam-Airplane-Dual-Flight-Mode-Flying-Toy-The-Best-Outdoor-Sport-Toy-Gifts-for-Kids/469352630)
+
 <img src="./assets/paintSketch.webp" width="512" height="360">
-
-<br>
 
 > Yes, this was designed in paint. I'm sorry. <br>
 > "cog" is short for Centre Of Gravity <br>
 > see: https://rcplanes.online/index5.htm
+
+<img src="./design/glider_info.png">
+
+The control linkages have not been included as they can only be finalized during the build process. I will be using a vertical mount made of hard cardboard / plastic which will be fixed via a music wire to the servo arm. This will be done for both the aileron and elevators.
+
+#### CAD Model Credits ([GrabCAD.com](https://grabcad.com/library)):
+- [Lidl Glider Basic Replica](https://grabcad.com/library/lidl-glider-basic-replica-1)
+- [MT2204 Brushless Motor](https://grabcad.com/library/mt2204-brushless-motor-1)
+- [Tower Pro SG92R Micro Servo](https://grabcad.com/library/tower-pro-sg92r-micro-servo-1)
+
+<img src="./design/glider_front.png" width="512">
+<img src="./design/glider_2.png" width="512">
 
 
 ## What currently works?
