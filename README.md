@@ -43,7 +43,10 @@ Design files (**.step, .dxf** are available in the [`/design` directory](./desig
 
 <img src="./design/glider_info.png">
 
-The control linkages have not been included as they can only be finalized during the build process. I will be using a vertical mount made of hard cardboard / plastic which will be fixed via a music wire to the servo arm. This will be done for both the aileron and elevators.
+- The control linkages have not been included as they can only be finalized during the build process.
+- The ailerons and elevators will be cut out from the foam wings and taped to the airframe after a 45deg cut so that they can fold up and down to some extent.
+- I will be using a vertical mount made of hard cardboard / cutout plastic which will be fixed via a music wire to the servo arm. The mounts will be glued to the ailerons and elevators.
+
 
 #### CAD Model Credits ([GrabCAD.com](https://grabcad.com/library)):
 - [Lidl Glider Basic Replica](https://grabcad.com/library/lidl-glider-basic-replica-1)
