@@ -31,10 +31,10 @@
 volatile uint8_t sbus_index = 0;
 volatile uint8_t sbus_byteCache[25];
 volatile uint8_t sbus_bitStore[11];
-volatile uint16_t sbus_channels[16];
+volatile uint16_t sbus_channels[8];
 static void (*channel_callback)(uint8_t, uint16_t) = NULL;
 
-static void sbus_byte_parser_2() {
+static void parse_sbus_bytes() {
     sbus_channels[0]  = ((sbus_byteCache[1]       | sbus_byteCache[2] << 8)                             & 0x07FF);
     sbus_channels[1]  = ((sbus_byteCache[2]  >> 3 | sbus_byteCache[3] << 5)                             & 0x07FF);
     sbus_channels[2]  = ((sbus_byteCache[3]  >> 6 | sbus_byteCache[4] << 2  | sbus_byteCache[5] << 10)  & 0x07FF);
@@ -61,7 +61,7 @@ static void on_uart_rx() {
             sbus_byteCache[sbus_index] = byte;
             sbus_index++;
             if (sbus_index == 25) {
-                sbus_byte_parser_2();
+                parse_sbus_bytes();
                 sbus_index = 0;
             }
         }
@@ -95,8 +95,11 @@ void register_channel_callback(void (*callback)(uint8_t, uint16_t)) {
     printf("receiver: channel callback registered\n");
 }
 
-void inject_sbus_byte(uint8_t data) {
-    //_parse_sbus_byte(data);
+void inject_sbus_bytes(uint8_t data[25]) {
+    for (int i = 0; i < 25; i++) {
+        sbus_byteCache[i] = data[i];
+    }
+    parse_sbus_bytes();
 }
 
 /*  
