@@ -1,5 +1,5 @@
-#include "mp92plus.h"
-#include "regmap.h"
+#include "./inc/mp92plus.h"
+#include "./inc/regmap.h"
 
 #if MP92_USE_SPI
 static inline void cs_select(uint pin_cs)

@@ -39,6 +39,7 @@ add_executable(GlideRC_FC_Firmware
     GlideRC_FC_Firmware.c
     src/hardware.c
     src/servo.c
+    libs/mp92plus/mp92plus.c
 )
 
 # Add global macro definition
