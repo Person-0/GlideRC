@@ -29,92 +29,41 @@
 
 // SBUS parsing
 volatile uint8_t sbus_index = 0;
+volatile uint8_t sbus_byteCache[25];
 volatile uint8_t sbus_bitStore[11];
-volatile uint8_t sbus_bitsStored = 0;
-volatile uint8_t sbus_workingBit;
-volatile uint8_t sbus_channelIndex = 0;
+volatile uint16_t sbus_channels[16];
 static void (*channel_callback)(uint8_t, uint16_t) = NULL;
 
-static void parse_channel(volatile uint8_t channel_data[11]) {
+static void sbus_byte_parser_2() {
+    sbus_channels[0]  = ((sbus_byteCache[1]       | sbus_byteCache[2] << 8)                             & 0x07FF);
+    sbus_channels[1]  = ((sbus_byteCache[2]  >> 3 | sbus_byteCache[3] << 5)                             & 0x07FF);
+    sbus_channels[2]  = ((sbus_byteCache[3]  >> 6 | sbus_byteCache[4] << 2  | sbus_byteCache[5] << 10)  & 0x07FF);
+    sbus_channels[3]  = ((sbus_byteCache[5]  >> 1 | sbus_byteCache[6] << 7)                             & 0x07FF);
+    sbus_channels[4]  = ((sbus_byteCache[6]  >> 4 | sbus_byteCache[7] << 4)                             & 0x07FF);
+    sbus_channels[5]  = ((sbus_byteCache[7]  >> 7 | sbus_byteCache[8] << 1  | sbus_byteCache[9] << 9)   & 0x07FF);
+    sbus_channels[6]  = ((sbus_byteCache[9]  >> 2 | sbus_byteCache[10] << 6)                            & 0x07FF);
+    sbus_channels[7]  = ((sbus_byteCache[10] >> 5 | sbus_byteCache[11] << 3)                            & 0x07FF);
 
-    uint16_t value = 0;
-
-    for (int i = 0; i < 11; i++) {
-        value |= (channel_data[i] << i);
+    for (uint8_t i = 0; i <= 7; i++) {
+        channel_callback(i + 1, sbus_channels[i]);
     }
-
-    if (channel_callback) {
-        channel_callback(sbus_channelIndex, value);
-    } else {
-        #ifndef ON_FC
-            printf("receiver: channel callback not registered!\n");
-        #endif
-    }
-
-    sbus_channelIndex += 1;
-
-    #ifndef ON_FC
-        printf("== CHANNEL %d VALUE: %d ==\n", sbus_channelIndex-1, value);
-    #endif
-}
-
-static void _parse_sbus_byte(volatile uint8_t sbus_byte) {
-
-    #ifndef ON_FC
-       printf("sbus byte recieved: %u\n", sbus_byte);
-    #endif
-
-    if (sbus_index > 0) {
-
-        if (sbus_index > 22) {
-
-            // 23 = flag
-            // 24 = end  0x00
-
-        } else {
-
-            // 16 rc channels on 22 bytes 
-            // each channel made of  11 bits
-            
-            for (int i = 7; i >= 0; i -= 1) {
-                sbus_workingBit = (sbus_byte >> i) & 1;
-                sbus_bitStore[10 - sbus_bitsStored] = sbus_workingBit;
-                sbus_bitsStored += 1;
-                if (sbus_bitsStored >= 11) {
-                    parse_channel(sbus_bitStore);
-                    sbus_bitsStored = 0;
-                }
-            }
-
-        }
-
-        sbus_index += 1;
-        if (sbus_index >= 25) {
-            sbus_index = 0;
-            sbus_channelIndex = 0;
-            sbus_bitsStored = 0;
-
-            #ifndef ON_FC
-                printf("finished 25 bytes for an sbus packet\n");
-            #endif
-        }
-
-    } else if (sbus_byte == 0x0F) {
-        sbus_index = 1;
-        sbus_channelIndex = 0;
-        sbus_bitsStored = 0;
-
-        #ifndef ON_FC
-            printf("starting sbus packet parsing (received start byte)\n");
-        #endif
-    }
-
 }
 
 static void on_uart_rx() {
     #ifdef ON_FC
         while (uart_is_readable(SBUS_UART_ID)) {
-            _parse_sbus_byte(uart_getc(SBUS_UART_ID));
+            uint8_t byte = uart_getc(SBUS_UART_ID);
+            if (sbus_index == 0) {
+                if (byte != 0x0F) {
+                    continue;
+                }
+            }
+            sbus_byteCache[sbus_index] = byte;
+            sbus_index++;
+            if (sbus_index == 25) {
+                sbus_byte_parser_2();
+                sbus_index = 0;
+            }
         }
     #endif
 }
@@ -147,7 +96,7 @@ void register_channel_callback(void (*callback)(uint8_t, uint16_t)) {
 }
 
 void inject_sbus_byte(uint8_t data) {
-    _parse_sbus_byte(data);
+    //_parse_sbus_byte(data);
 }
 
 /*  
